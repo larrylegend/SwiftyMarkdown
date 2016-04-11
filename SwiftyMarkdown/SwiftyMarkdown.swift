@@ -11,7 +11,7 @@ import UIKit
 
 public protocol FontProperties {
 	var fontName : String? { get set }
-  var fontSize : CGFloat? { get set }
+	var fontSize : CGFloat? { get set }
 	var color : UIColor { get set }
 }
 
@@ -25,7 +25,7 @@ If that is not set, then the system default will be used.
 public struct BasicStyles : FontProperties {
 	public var fontName : String? = UIFont.preferredFontForTextStyle(UIFontTextStyleBody).fontName
 	public var fontSize: CGFloat?
-  public var color = UIColor.blackColor()
+	public var color = UIColor.blackColor()
 }
 
 enum LineType : Int {
@@ -321,7 +321,7 @@ public class SwiftyMarkdown {
 		switch currentType {
 		case .H1:
 			fontName = h1.fontName
-      fontSize = h1.fontSize
+			fontSize = h1.fontSize
 			if #available(iOS 9, *) {
 				textStyle = UIFontTextStyleTitle1
 			} else {
@@ -330,7 +330,7 @@ public class SwiftyMarkdown {
 			attributes[NSForegroundColorAttributeName] = h1.color
 		case .H2:
 			fontName = h2.fontName
-      fontSize = h2.fontSize
+			fontSize = h2.fontSize
 			if #available(iOS 9, *) {
 				textStyle = UIFontTextStyleTitle2
 			} else {
@@ -339,7 +339,7 @@ public class SwiftyMarkdown {
 			attributes[NSForegroundColorAttributeName] = h2.color
 		case .H3:
 			fontName = h3.fontName
-      fontSize = h3.fontSize
+			fontSize = h3.fontSize
 			if #available(iOS 9, *) {
 				textStyle = UIFontTextStyleTitle2
 			} else {
@@ -348,22 +348,22 @@ public class SwiftyMarkdown {
 			attributes[NSForegroundColorAttributeName] = h3.color
 		case .H4:
 			fontName = h4.fontName
-      fontSize = h4.fontSize
+			fontSize = h4.fontSize
 			textStyle = UIFontTextStyleHeadline
 			attributes[NSForegroundColorAttributeName] = h4.color
 		case .H5:
 			fontName = h5.fontName
-      fontSize = h5.fontSize
+			fontSize = h5.fontSize
 			textStyle = UIFontTextStyleSubheadline
 			attributes[NSForegroundColorAttributeName] = h5.color
 		case .H6:
 			fontName = h6.fontName
-      fontSize = h6.fontSize
+			fontSize = h6.fontSize
 			textStyle = UIFontTextStyleFootnote
 			attributes[NSForegroundColorAttributeName] = h6.color
 		default:
 			fontName = body.fontName
-      fontSize = body.fontSize
+			fontSize = body.fontSize
 			textStyle = UIFontTextStyleBody
 			attributes[NSForegroundColorAttributeName] = body.color
 			break
@@ -373,13 +373,13 @@ public class SwiftyMarkdown {
 
 		if style == .Code {
 			fontName = code.fontName
-      fontSize = code.fontSize ?? body.fontSize
+			fontSize = code.fontSize ?? body.fontSize
 			attributes[NSForegroundColorAttributeName] = code.color
 		}
 
 		if style == .Link {
 			fontName = link.fontName
-      fontSize = link.fontSize ?? body.fontSize
+			fontSize = link.fontSize ?? body.fontSize
 			attributes[NSForegroundColorAttributeName] = link.color
 		}
 
