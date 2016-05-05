@@ -44,9 +44,9 @@ enum LineStyle : Int {
 			return .Bold
 		} else if string == "*" || string == "_" {
 			return .Italic
-		} else if string == "`" {
-			return .Code
-		} else if string == "["  {
+//		} else if string == "`" {
+//			return .Code
+		} else if string == "[" || string == "<" {
 			return .Link
 		} else {
 			return .None
@@ -95,7 +95,7 @@ public class SwiftyMarkdown {
 
 
 	let string : String
-	let instructionSet = NSCharacterSet(charactersInString: "[\\*_`")
+	let instructionSet = NSCharacterSet(charactersInString: "[\\*_<")
 
 	/**
 
@@ -138,7 +138,7 @@ public class SwiftyMarkdown {
 
 		var lineCount = 0
 
-		let headings = ["# ", "## ", "### ", "#### ", "##### ", "###### "]
+        let headings = [String]() // ["# ", "## ", "### ", "#### ", "##### ", "###### "]
 
 		var skipLine = false
 		for theLine in lines {
@@ -248,13 +248,16 @@ public class SwiftyMarkdown {
 
 			var linkText : NSString?
 			var linkURL : NSString?
-			let linkCharacters = NSCharacterSet(charactersInString: "]()")
+			let linkCharacters = NSCharacterSet(charactersInString: "]()>")
 
 			scanner.scanUpToCharactersFromSet(linkCharacters, intoString: &linkText)
 			scanner.scanCharactersFromSet(linkCharacters, intoString: nil)
 			scanner.scanUpToCharactersFromSet(linkCharacters, intoString: &linkURL)
 			scanner.scanCharactersFromSet(linkCharacters, intoString: nil)
 
+            if linkText != nil && linkURL == nil {
+                linkURL = linkText
+            }
 
 			if let hasLink = linkText, hasURL = linkURL {
 				followingString = hasLink as String
