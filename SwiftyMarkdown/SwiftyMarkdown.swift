@@ -254,15 +254,19 @@ public class SwiftyMarkdown {
 			scanner.scanCharactersFromSet(linkTextCharacters, intoString: nil)
 			
 			let currentIndexInt = scanner.scanLocation
-			let startIndex = scanner.string.startIndex.advancedBy(currentIndexInt)
-			let singleCharacterRange = Range<String.Index>(start: startIndex, end: startIndex.advancedBy(1))
-			if scanner.string.substringWithRange(singleCharacterRange) == "(" {
-				let linkURLCharacters = NSCharacterSet(charactersInString: "()")
-				scanner.scanCharactersFromSet(linkURLCharacters, intoString: nil)
-				scanner.scanUpToCharactersFromSet(linkURLCharacters, intoString: &linkURL)
-				scanner.scanCharactersFromSet(linkURLCharacters, intoString: nil)
-			}
-			else {
+            
+            if currentIndexInt < string.characters.count {
+                let startIndex = scanner.string.startIndex.advancedBy(currentIndexInt)
+                let singleCharacterRange = Range<String.Index>(start: startIndex, end: startIndex.advancedBy(1))
+                if scanner.string.substringWithRange(singleCharacterRange) == "(" {
+                    let linkURLCharacters = NSCharacterSet(charactersInString: "()")
+                    scanner.scanCharactersFromSet(linkURLCharacters, intoString: nil)
+                    scanner.scanUpToCharactersFromSet(linkURLCharacters, intoString: &linkURL)
+                    scanner.scanCharactersFromSet(linkURLCharacters, intoString: nil)
+                }
+            }
+            
+            if linkText != nil && linkURL == nil {
 				linkURL = linkText
 			}
 			
