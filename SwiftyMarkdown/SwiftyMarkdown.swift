@@ -229,7 +229,7 @@ public class SwiftyMarkdown {
 			}
 
 			// Append a new line character to the end of the processed line
-			attributedString.appendAttributedString(NSAttributedString(string: "\n"))
+//			attributedString.appendAttributedString(NSAttributedString(string: "\n"))
 			currentType = .Body
 		}
 
