@@ -12,6 +12,7 @@ import UIKit
 public protocol FontProperties {
 	var fontName : String? { get set }
 	var fontSize : CGFloat? { get set }
+    var fontWeight: CGFloat? { get set }
 	var color : UIColor { get set }
 }
 
@@ -25,6 +26,7 @@ If that is not set, then the system default will be used.
 public struct BasicStyles : FontProperties {
 	public var fontName : String? = UIFont.preferredFontForTextStyle(UIFontTextStyleBody).fontName
 	public var fontSize: CGFloat?
+    public var fontWeight: CGFloat?
 	public var color = UIColor.blackColor()
 }
 
@@ -229,7 +231,7 @@ public class SwiftyMarkdown {
 			}
 
 			// Append a new line character to the end of the processed line
-//			attributedString.appendAttributedString(NSAttributedString(string: "\n"))
+			attributedString.appendAttributedString(NSAttributedString(string: "\n"))
 			currentType = .Body
 		}
 
@@ -421,11 +423,15 @@ public class SwiftyMarkdown {
 			finalFont = UIFont(descriptor: italicDescriptor, size: styleSize)
 		}
 		if style == .Bold {
-			let boldDescriptor = finalFontDescriptor.fontDescriptorWithSymbolicTraits(.TraitBold)
-			finalFont = UIFont(descriptor: boldDescriptor, size: styleSize)
-		}
-
-
+            var boldDescriptor = finalFontDescriptor.fontDescriptorWithSymbolicTraits(.TraitBold)
+            finalFont = UIFont(descriptor: boldDescriptor, size: styleSize)
+            if #available(iOS 8.2, *) {
+                if let fontWeight = bold.fontWeight {
+                    finalFont = UIFont.systemFontOfSize(styleSize, weight: fontWeight)
+                }
+            }
+        }
+        
 		attributes[NSFontAttributeName] = finalFont
 
 		return NSAttributedString(string: string, attributes: attributes)
