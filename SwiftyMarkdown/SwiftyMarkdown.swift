@@ -310,10 +310,15 @@ public class SwiftyMarkdown {
 		while matchedCharacters.containsString("\\") {
 			if let hasRange = matchedCharacters.rangeOfString("\\") {
 
-				let newRange  = hasRange.startIndex...hasRange.endIndex
-				foundCharacters = foundCharacters + matchedCharacters.substringWithRange(newRange)
+                if matchedCharacters.endIndex > hasRange.endIndex {
+                    let newRange  = hasRange.startIndex...hasRange.endIndex
+                    foundCharacters = foundCharacters + matchedCharacters.substringWithRange(newRange)
 
-				matchedCharacters.removeRange(newRange)
+                    matchedCharacters.removeRange(newRange)
+                }
+                else {
+                    matchedCharacters.removeRange(hasRange)
+                }
 			}
 
 		}
