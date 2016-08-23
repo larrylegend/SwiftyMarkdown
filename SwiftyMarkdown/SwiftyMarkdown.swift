@@ -250,11 +250,12 @@ public class SwiftyMarkdown {
 
 			var linkText : NSString?
 			var linkURL : NSString?
+			var closingCharacters : NSString?
 			let linkTextCharacters = NSCharacterSet(charactersInString: "]>")
 
 			scanner.scanUpToCharactersFromSet(linkTextCharacters, intoString: &linkText)
-			scanner.scanCharactersFromSet(linkTextCharacters, intoString: nil)
-			
+			scanner.scanCharactersFromSet(linkTextCharacters, intoString: &closingCharacters)
+
 			let currentIndexInt = scanner.scanLocation
             
             if currentIndexInt < string.characters.count {
@@ -268,18 +269,28 @@ public class SwiftyMarkdown {
                 }
             }
             
-            if linkText != nil && linkURL == nil {
-				linkURL = linkText
-			}
-			
-			if let hasLink = linkText, hasURL = linkURL {
-				followingString = hasLink as String
-				attributes[NSLinkAttributeName] = NSURL(string: hasURL as String)
-			} else {
-				style = .None
-			}
-		} else {
-			scanner.scanUpToCharactersFromSet(instructionSet, intoString: &followingString)
+            if let hasLink = linkText, hasURL = linkURL {
+                followingString = hasLink as String
+                attributes[NSLinkAttributeName] = NSURL(string: hasURL as String)
+            } else {
+                // [text] or <text> with no following (http://...) will be shown with no link style
+                var unescapedString: String = ""
+                
+                unescapedString = results.foundCharacters
+                
+                if let hasLink = linkText as? String {
+                    unescapedString = unescapedString + hasLink
+                }
+                if let closingCharacters = closingCharacters as? String {
+                    unescapedString = unescapedString + closingCharacters
+                }
+                
+                followingString = unescapedString as NSString?
+                
+                style = .None
+            }
+        } else {
+            scanner.scanUpToCharactersFromSet(instructionSet, intoString: &followingString)
 		}
 
 		let attributedString = attributedStringFromString(results.escapedCharacters, withStyle: style).mutableCopy() as! NSMutableAttributedString
